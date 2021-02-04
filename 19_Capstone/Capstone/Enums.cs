@@ -6,7 +6,7 @@ namespace Capstone
 {
     public enum ItemType
     {
-        Chips,
+        Chip,
         Candy,
         Drink,
         Gum

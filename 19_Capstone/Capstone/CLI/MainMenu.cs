@@ -31,7 +31,11 @@ namespace Capstone.CLI
 
         private MenuOptionResult PurchaseItems()
         {
-            throw new NotImplementedException();
+            SubMenu subMenu = new SubMenu(vm);
+            while (true)
+            {
+                subMenu.Show();
+            }
         }
 
         private MenuOptionResult DisplayItems()
@@ -41,12 +45,19 @@ namespace Capstone.CLI
             {
                 Console.WriteLine(thing);
             }
-            return MenuOptionResult.WaitThenCloseAfterSelection;
+            return MenuOptionResult.WaitAfterMenuSelection;
         }
 
         protected override void OnBeforeShow()
         {
-            Console.WriteLine(); //greeting
+            {
+                Console.WriteLine(@" __  __       _         __  __                  ");
+                Console.WriteLine(@"|  \/  | __ _(_)_ __   |  \/  | ___ _ __  _   _ ");
+                Console.WriteLine(@"| |\/| |/ _` | | '_ \  | |\/| |/ _ \ '_ \| | | |");
+                Console.WriteLine(@"| |  | | (_| | | | | | | |  | |  __/ | | | |_| |");
+                Console.WriteLine(@"|_|  |_|\__,_|_|_| |_| |_|  |_|\___|_| |_|\__,_|");
+                Console.WriteLine();
+            }
         }
 
     }

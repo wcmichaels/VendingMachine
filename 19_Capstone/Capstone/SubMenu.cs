@@ -15,6 +15,7 @@ namespace Capstone.CLI
             this.AddOption("Feed Money", FeedMoney);
             this.AddOption("Select Product", SelectProduct);
             this.AddOption("Finish Transaction", FinishTransaction);
+
         }
 
         private MenuOptionResult SelectProduct()
