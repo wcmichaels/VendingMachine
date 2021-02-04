@@ -20,7 +20,18 @@ namespace Capstone.CLI
 
         private MenuOptionResult SelectProduct()
         {
-            throw new NotImplementedException();
+            List<string> itemsToDisplay = vm.GetItemsToDisplay();
+            foreach (string item in itemsToDisplay)
+            {
+                Console.WriteLine(item);
+            }
+
+            Console.Write("Please select the item location that you would like to purchase: ");
+            string userInput = Console.ReadLine();
+            string messageToUser = vm.PurchaseItem(userInput);
+            Console.WriteLine(messageToUser);
+
+            return MenuOptionResult.WaitAfterMenuSelection;
         }
 
         private MenuOptionResult FinishTransaction()
@@ -30,7 +41,12 @@ namespace Capstone.CLI
 
         private MenuOptionResult FeedMoney()
         {
-            throw new NotImplementedException();
+            Console.Write("Please enter how much money you would like to insert: ");
+            string inputString = Console.ReadLine();
+            string messageToUser = vm.FeedMoney(inputString);
+            Console.WriteLine(messageToUser);
+
+            return MenuOptionResult.WaitAfterMenuSelection;
         }
     }
 

@@ -20,22 +20,23 @@ namespace Capstone.CLI
         private VendingMachine vm; //user only needs to access methods we're using in this class
         public MainMenu(VendingMachine vm) //passed new vm created in Program
         {
-           this.vm = vm;
+            this.vm = vm;
 
             this.AddOption("Display Items", DisplayItems);
             this.AddOption("Make Purchase", PurchaseItems);
             this.AddOption("Exit", Exit);
 
-          
+
         }
 
         private MenuOptionResult PurchaseItems()
         {
             SubMenu subMenu = new SubMenu(vm);
-            while (true)
-            {
-                subMenu.Show();
-            }
+
+            subMenu.Show();
+
+            return MenuOptionResult.WaitAfterMenuSelection;
+
         }
 
         private MenuOptionResult DisplayItems()

@@ -51,6 +51,72 @@ namespace Capstone
 
         }
 
+        public string PurchaseItem(string userInput)
+        {
+
+            foreach (VendingItem item in this.Items)
+            {
+
+                if (item.Location.ToLower() == userInput.ToLower())
+                {
+                    if (item.Inventory > 0 && this.CurrentBalance > item.Price)
+                    {
+                        this.CurrentBalance -= item.Price;
+                        string itemTypeMessage = GetItemType(item);
+
+                        return $"Successfully purchased {item.Name}, remaining balance: {this.CurrentBalance}";
+                    }
+
+                    else if (this.CurrentBalance < item.Price)
+                    {
+                        return "Please insert more money to purchase this item";
+                    }
+                    else
+                    {
+                        return "I'm sorry we do not have this item in stock";
+                    }
+                }
+            }
+
+            return "Please provide a valid location.";
+        }
+
+        private string GetItemType(VendingItem item)
+        {
+            if (item.Type == ItemType.Candy)
+            {
+                return "Munch Munch, Yum!";
+            }
+            else if (item.Type == ItemType.Chip) {
+                return "Crunch Crunch, Yum!";
+            }
+            else if (item.Type == ItemType.Drink)
+            {
+                return "Glug Glug, Yum!";
+            }
+            else
+            {
+                return "Chew Chew, Yum!";
+            }
+        }
+
+
+        public string FeedMoney(string inputString)
+        {
+            bool isValidAmount = decimal.TryParse(inputString, out decimal moneyToAdd);
+
+            if (isValidAmount)
+            {
+                if (moneyToAdd == 1 || moneyToAdd == 2 || moneyToAdd == 5 || moneyToAdd == 10)
+                {
+                    CurrentBalance += moneyToAdd;
+                    return $"Added {moneyToAdd:c} to balance.";
+                }
+            }
+
+            return "Please enter valid dollar amount.";
+        }
+
         public List<string> GetItemsToDisplay()
         {
             List<string> output = new List<string>();
