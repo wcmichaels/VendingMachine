@@ -48,6 +48,25 @@ namespace Capstone
                 Console.WriteLine("Sorry we had a problem loading the file.");
 
             }
+
+        }
+
+        public List<string> GetItemsToDisplay()
+        {
+            List<string> output = new List<string>();
+
+            foreach (VendingItem item in Items)
+            {
+                if (item.Inventory == 0)
+                {
+                   output.Add($"{item.Location} | {item.Price} | {item.Name} | SOLD OUT");
+                } else
+                {
+                   output.Add($"{item.Location} | {item.Price} | {item.Name}");
+                }
+
+            }
+            return output;
         }
     }
 }

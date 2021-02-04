@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Capstone.CLI
 {
-    public class MainMenu : ConsoleMenu
+    public class MainMenu : MenuFramework.ConsoleMenu
     {
         /*******************************************************************************
          * Private data:
@@ -16,9 +16,37 @@ namespace Capstone.CLI
          * ****************************************************************************/
 
         // NOTE: This constructor could be changed to accept arguments needed by the menu
-        public MainMenu()
+
+        private VendingMachine vm; //user only needs to access methods we're using in this class
+        public MainMenu(VendingMachine vm) //passed new vm created in Program
         {
-           
+           this.vm = vm;
+
+            this.AddOption("Display Items", DisplayItems);
+            this.AddOption("Make Purchase", PurchaseItems);
+            this.AddOption("Exit", Exit);
+
+          
+        }
+
+        private MenuOptionResult PurchaseItems()
+        {
+            throw new NotImplementedException();
+        }
+
+        private MenuOptionResult DisplayItems()
+        {
+            List<string> ItemsToDisplay = vm.GetItemsToDisplay();
+            foreach (string thing in ItemsToDisplay)
+            {
+                Console.WriteLine(thing);
+            }
+            return MenuOptionResult.WaitThenCloseAfterSelection;
+        }
+
+        protected override void OnBeforeShow()
+        {
+            Console.WriteLine(); //greeting
         }
 
     }
