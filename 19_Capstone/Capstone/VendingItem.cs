@@ -11,6 +11,7 @@ namespace Capstone
         public decimal Price { get; set; }
         public string Location { get; set; }
         public int Inventory { get; set; } = 5;
+        public int TotalSold { get; set; }
 
     }
 }

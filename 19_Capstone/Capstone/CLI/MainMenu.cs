@@ -25,8 +25,16 @@ namespace Capstone.CLI
             this.AddOption("Display Items", DisplayItems);
             this.AddOption("Make Purchase", PurchaseItems);
             this.AddOption("Exit", Exit);
+            this.AddOption("", SalesLog);
 
 
+        }
+
+        private MenuOptionResult SalesLog()
+        {
+            vm.CreateSalesReport();
+
+            return MenuOptionResult.DoNotWaitAfterMenuSelection;
         }
 
         private MenuOptionResult PurchaseItems()

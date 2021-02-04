@@ -51,6 +51,43 @@ namespace Capstone
 
         }
 
+        internal void CreateSalesReport()
+        {
+            decimal runningSum = 0;
+            List<string> logItems = new List<string>();
+
+            using (StreamReader sr = new StreamReader(@"..\..\..\..\Log.txt"))
+            {
+                while (!sr.EndOfStream)
+                {
+                    logItems.Add(sr.ReadLine());
+                }
+            }
+
+            foreach (string logItem in logItems)
+            {
+                foreach (VendingItem vendingItem in this.Items)
+                {
+                    if (logItem.Contains(vendingItem.Name))
+                    {
+                        runningSum += vendingItem.Price;
+                        vendingItem.TotalSold++;
+                    }
+                }
+            }
+            string fileDate = DateTime.Now.ToString("MMddyyyy_HHmmsstt");
+            using (StreamWriter sw = new StreamWriter($"..\\..\\..\\..\\{fileDate}SalesReport.txt"))
+            {
+                foreach (VendingItem item in this.Items)
+                {
+                    sw.WriteLine($"{item.Name}|{item.TotalSold}");
+                }
+
+                sw.WriteLine();
+                sw.WriteLine($"TOTAL SALES: {runningSum:c}");
+            }
+        }
+
         public string PurchaseItem(string userInput)
         {
 
@@ -61,7 +98,10 @@ namespace Capstone
                 {
                     if (item.Inventory > 0 && this.CurrentBalance > item.Price)
                     {
+                        decimal previousBalanceToLog = CurrentBalance;
+                        string logName = $"{item.Name} {item.Location}";
                         this.CurrentBalance -= item.Price;
+                        LogTransaction(logName, previousBalanceToLog, CurrentBalance);
                         string itemTypeMessage = GetItemType(item);
 
                         return $"Successfully purchased {item.Name}, remaining balance: {this.CurrentBalance}";
@@ -87,7 +127,8 @@ namespace Capstone
             {
                 return "Munch Munch, Yum!";
             }
-            else if (item.Type == ItemType.Chip) {
+            else if (item.Type == ItemType.Chip)
+            {
                 return "Crunch Crunch, Yum!";
             }
             else if (item.Type == ItemType.Drink)
@@ -109,7 +150,9 @@ namespace Capstone
             {
                 if (moneyToAdd == 1 || moneyToAdd == 2 || moneyToAdd == 5 || moneyToAdd == 10)
                 {
+                    decimal previousBalanceToLog = CurrentBalance;
                     CurrentBalance += moneyToAdd;
+                    LogTransaction("FEED MONEY", previousBalanceToLog, CurrentBalance);
                     return $"Added {moneyToAdd:c} to balance.";
                 }
             }
@@ -125,10 +168,11 @@ namespace Capstone
             {
                 if (item.Inventory == 0)
                 {
-                   output.Add($"{item.Location} | {item.Price} | {item.Name} | SOLD OUT");
-                } else
+                    output.Add($"{item.Location} | {item.Price} | {item.Name} | SOLD OUT");
+                }
+                else
                 {
-                   output.Add($"{item.Location} | {item.Price} | {item.Name}");
+                    output.Add($"{item.Location} | {item.Price} | {item.Name}");
                 }
 
             }
@@ -144,8 +188,8 @@ namespace Capstone
             //10 % 10 = 0(1 dime)
             //310 / 25 gives us the number of quarters (12)
             //return 12 quarters and one dime as a string
-
-            int numberOfCents = (int)CurrentBalance * 100;
+            decimal previousBalanceToLog = CurrentBalance;
+            int numberOfCents = (int)(CurrentBalance * 100);
             int quarters = numberOfCents / 25;
             int centsRemaining = numberOfCents % 25;
             int dimes = centsRemaining / 10;
@@ -155,9 +199,20 @@ namespace Capstone
             int pennies = centsRemaining;
             CurrentBalance = 0;
 
+            LogTransaction("GIVE CHANGE", previousBalanceToLog, CurrentBalance);
+
             //TODO if no pennies or nickels or dimes, update string accordingly (if else returns)
 
             return ($"Here's your change. {quarters} quarters, {dimes} dimes, {nickels} nickels, and {pennies} pennies.");
         }
+
+        private void LogTransaction(string logName, decimal previousBalance, decimal currentBalance)
+        {
+            using (StreamWriter sw = new StreamWriter(@"..\..\..\..\Log.txt", true))
+            {
+                sw.WriteLine($"{DateTime.Now} {logName} {previousBalance:c} {currentBalance:c}");
+            }
+        }
+
     }
 }
