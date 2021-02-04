@@ -134,5 +134,30 @@ namespace Capstone
             }
             return output;
         }
+
+        public string FinishTransaction()
+        {
+            //CurrentBalance must be zero
+            //3.10 
+            //*100 = 310 cents
+            //310 % 25 gives us the cents remaining that aren't quarters (10)
+            //10 % 10 = 0(1 dime)
+            //310 / 25 gives us the number of quarters (12)
+            //return 12 quarters and one dime as a string
+
+            int numberOfCents = (int)CurrentBalance * 100;
+            int quarters = numberOfCents / 25;
+            int centsRemaining = numberOfCents % 25;
+            int dimes = centsRemaining / 10;
+            centsRemaining = centsRemaining % 10;
+            int nickels = centsRemaining / 5;
+            centsRemaining = centsRemaining % 5;
+            int pennies = centsRemaining;
+            CurrentBalance = 0;
+
+            //TODO if no pennies or nickels or dimes, update string accordingly (if else returns)
+
+            return ($"Here's your change. {quarters} quarters, {dimes} dimes, {nickels} nickels, and {pennies} pennies.");
+        }
     }
 }

@@ -36,7 +36,11 @@ namespace Capstone.CLI
 
         private MenuOptionResult FinishTransaction()
         {
-            throw new NotImplementedException();
+            //giving change method, prints message, update balance to 0
+            //return to main menu
+            string messageToUser = vm.FinishTransaction();
+            Console.WriteLine(messageToUser);
+            return MenuOptionResult.WaitThenCloseAfterSelection;
         }
 
         private MenuOptionResult FeedMoney()
