@@ -7,8 +7,8 @@ namespace Capstone
 {
     public class VendingMachine
     {
-        public List<VendingItem> Items { get; set; } = new List<VendingItem>();
-        public decimal CurrentBalance { get; set; } = 0;
+        public List<VendingItem> Items { get; private set; } = new List<VendingItem>();
+        public decimal CurrentBalance { get; private set; } = 0;
 
         public VendingMachine()
         {
@@ -25,17 +25,18 @@ namespace Capstone
                 {
                     while (!sr.EndOfStream)
                     {
-                        VendingItem vendingItem = new VendingItem();
 
                         string line = sr.ReadLine();
 
                         string[] splits = line.Split("|");
 
-                        vendingItem.Location = splits[0];
-                        vendingItem.Name = splits[1];
-                        vendingItem.Price = decimal.Parse(splits[2]);
-                        vendingItem.Type = Enum.Parse<ItemType>(splits[3]);
+                        string location = splits[0];
+                        string name = splits[1];
+                        decimal price = decimal.Parse(splits[2]);
+                        ItemType type = Enum.Parse<ItemType>(splits[3]);
 
+                        VendingItem vendingItem = new VendingItem(name, type, price, location);
+     
                         this.Items.Add(vendingItem);
 
                     }
@@ -43,15 +44,13 @@ namespace Capstone
             }
             catch (Exception ex)
             {
-                // TODO - finish catch
+                // TODO - finish catch (possibly make a log file for caught exceptions to catch and write the error to)
 
                 Console.WriteLine("Sorry we had a problem loading the file.");
-
             }
-
         }
 
-        internal void CreateSalesReport()
+        public void CreateSalesReport()
         {
             decimal runningSum = 0;
             List<string> logItems = new List<string>();
@@ -71,7 +70,7 @@ namespace Capstone
                     if (logItem.Contains(vendingItem.Name))
                     {
                         runningSum += vendingItem.Price;
-                        vendingItem.TotalSold++;
+                        vendingItem.AddOneItemToTotalSold();
                     }
                 }
             }
@@ -96,13 +95,14 @@ namespace Capstone
 
                 if (item.Location.ToLower() == userInput.ToLower())
                 {
-                    if (item.Inventory > 0 && this.CurrentBalance > item.Price)
+                    if (item.Inventory > 0 && this.CurrentBalance >= item.Price)
                     {
                         decimal previousBalanceToLog = CurrentBalance;
                         string logName = $"{item.Name} {item.Location}";
                         this.CurrentBalance -= item.Price;
                         LogTransaction(logName, previousBalanceToLog, CurrentBalance);
                         string itemTypeMessage = GetItemType(item);
+                        item.RemoveOneItemFromInventory();
 
                         return $"Successfully purchased {item.Name}, remaining balance: {this.CurrentBalance}";
                     }
@@ -189,13 +189,17 @@ namespace Capstone
             //310 / 25 gives us the number of quarters (12)
             //return 12 quarters and one dime as a string
             decimal previousBalanceToLog = CurrentBalance;
+
             int numberOfCents = (int)(CurrentBalance * 100);
             int quarters = numberOfCents / 25;
             int centsRemaining = numberOfCents % 25;
+
             int dimes = centsRemaining / 10;
             centsRemaining = centsRemaining % 10;
+
             int nickels = centsRemaining / 5;
             centsRemaining = centsRemaining % 5;
+
             int pennies = centsRemaining;
             CurrentBalance = 0;
 
