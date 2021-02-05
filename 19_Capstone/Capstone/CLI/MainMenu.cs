@@ -7,6 +7,21 @@ namespace Capstone.CLI
 {
     public class MainMenu : MenuFramework.ConsoleMenu
     {
+
+        public void Welcome()
+        {
+            Console.WriteLine(@"__   __  _______  __    _  ______   _______         __   __  _______  _______  ___   _______     _____   _______  _______  ");
+            Console.WriteLine(@"|  | |  ||       ||  |  | ||      | |       |       |  |_|  ||   _   ||       ||   | |       |   |  _  | |  _    ||  _    |");
+            Console.WriteLine(@"|  |_|  ||    ___||   |_| ||  _    ||   _   | ____  |       ||  |_|  ||_     _||   | |       |   | |_| | | | |   || | |   |");
+            Console.WriteLine(@"|       ||   |___ |       || | |   ||  | |  ||____| |       ||       |  |   |  |   | |       |  |   _   || | |   || | |   |");
+            Console.WriteLine(@"|       ||    ___||  _    || |_|   ||  |_|  |       |       ||       |  |   |  |   | |      _|  |  | |  || |_|   || |_|   |");
+            Console.WriteLine(@" |     | |   |___ | | |   ||       ||       |       | ||_|| ||   _   |  |   |  |   | |     |_   |  |_|  ||       ||       |");
+            Console.WriteLine(@"  |___|  |_______||_|  |__||______| |_______|       |_|   |_||__| |__|  |___|  |___| |_______|  |_______||_______||_______|");
+            Console.WriteLine();
+            Console.WriteLine("Hit Enter to Continue");
+            Console.ReadLine();
+        }
+
         /*******************************************************************************
          * Private data:
          * Usually, a menu has to hold a reference to some type of "business objects",
@@ -20,6 +35,7 @@ namespace Capstone.CLI
         private VendingMachine vm; //user only needs to access methods we're using in this class
         public MainMenu(VendingMachine vm) //passed new vm created in Program
         {
+
             this.vm = vm;
 
             this.AddOption("Display Items", DisplayItems);
@@ -27,8 +43,15 @@ namespace Capstone.CLI
             this.AddOption("Exit", Exit);
             this.AddOption("", SalesLog);
 
+            Configure(cfg =>
+            {
+                cfg.ItemForegroundColor = ConsoleColor.Blue;
+                cfg.SelectedItemForegroundColor = ConsoleColor.Green;
+                cfg.MenuSelectionMode = MenuSelectionMode.Arrow;
+            });
 
         }
+
 
         private MenuOptionResult SalesLog()
         {
@@ -57,17 +80,7 @@ namespace Capstone.CLI
             return MenuOptionResult.WaitAfterMenuSelection;
         }
 
-        protected override void OnBeforeShow()
-        {
-            {
-                Console.WriteLine(@" __  __       _         __  __                  ");
-                Console.WriteLine(@"|  \/  | __ _(_)_ __   |  \/  | ___ _ __  _   _ ");
-                Console.WriteLine(@"| |\/| |/ _` | | '_ \  | |\/| |/ _ \ '_ \| | | |");
-                Console.WriteLine(@"| |  | | (_| | | | | | | |  | |  __/ | | | |_| |");
-                Console.WriteLine(@"|_|  |_|\__,_|_|_| |_| |_|  |_|\___|_| |_|\__,_|");
-                Console.WriteLine();
-            }
-        }
+        
 
     }
 }

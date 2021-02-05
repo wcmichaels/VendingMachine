@@ -206,10 +206,26 @@ namespace Capstone
             LogTransaction("GIVE CHANGE", previousBalanceToLog, CurrentBalance);
 
             //TODO if no pennies or nickels or dimes, update string accordingly (if else returns)
-
-            return ($"Here's your change. {quarters} quarters, {dimes} dimes, {nickels} nickels, and {pennies} pennies.");
+            string output = "Here's your change.";
+            string qOutput = GetChangeWording(quarters, $"quarter");
+            string dOutput = GetChangeWording(dimes, $"dime");
+            string nOutput = GetChangeWording(nickels, $"nickel");
+            string change = $"{output}{qOutput}{dOutput}{nOutput}";
+            return change;
         }
 
+        private string GetChangeWording(int numberOfCoins, string coinName)
+        {
+            if (numberOfCoins == 0)
+            {
+                return "";
+            } else if (numberOfCoins == 1) {
+                return $" 1 {coinName}";
+            } else
+            {
+                return $" {numberOfCoins} {coinName}s";
+            }
+        }
         private void LogTransaction(string logName, decimal previousBalance, decimal currentBalance)
         {
             using (StreamWriter sw = new StreamWriter(@"..\..\..\..\Log.txt", true))

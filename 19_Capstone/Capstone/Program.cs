@@ -24,6 +24,8 @@ namespace Capstone
             // Some objects could be passed into the menu constructor, so that the menu has something to 
             // perform its actions against....
             MainMenu mainMenu = new MainMenu(vm);
+            Console.WindowWidth = Console.LargestWindowWidth - 20;
+            mainMenu.Welcome();
             mainMenu.Show();
         }
     }
