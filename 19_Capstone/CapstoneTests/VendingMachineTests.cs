@@ -8,7 +8,7 @@ namespace CapstoneTests
     public class VendingMachineTests
     {
         [DataTestMethod]
-        [DataRow("B3", "5", "Successfully purchased Wonka Bar, remaining balance: 3.50")]
+        [DataRow("B3", "5", "Successfully purchased Wonka Bar, remaining balance: 3.50\nMunch Munch, Yum!")]
         [DataRow("c1", "1", "Please insert more money to purchase this item")]
         [DataRow("", "1", "Please provide a valid location.")]
         [DataRow("d8", "1", "Please provide a valid location.")]
@@ -27,7 +27,7 @@ namespace CapstoneTests
         }
 
         [DataTestMethod]
-        [DataRow("C4", "1", "Successfully purchased Heavy, remaining balance: 0.00")]
+        [DataRow("C4", "1", "Successfully purchased Heavy, remaining balance: 0.00\nGlug Glug, Yum!")]
         public void PurchaseItemTests_ExactChange(string itemLocation, string moneyToAdd, string expectOutput)
         {
             // Arrange

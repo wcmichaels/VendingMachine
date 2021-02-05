@@ -31,6 +31,7 @@ namespace Capstone.CLI
             Console.Write("Please select the item location that you would like to purchase: ");
             string userInput = Console.ReadLine();
             string messageToUser = vm.PurchaseItem(userInput);
+            Console.WriteLine();
             Console.WriteLine(messageToUser);
             Console.Beep(699, 500);
             return MenuOptionResult.WaitAfterMenuSelection;

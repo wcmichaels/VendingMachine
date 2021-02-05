@@ -103,8 +103,7 @@ namespace Capstone
                         LogTransaction(logName, previousBalanceToLog, CurrentBalance);
                         string itemTypeMessage = GetItemType(item);
                         item.RemoveOneItemFromInventory();
-
-                        return $"Successfully purchased {item.Name}, remaining balance: {this.CurrentBalance}";
+                        return $"Successfully purchased {item.Name}, remaining balance: {this.CurrentBalance}\n{itemTypeMessage}";
                     }
 
                     else if (this.CurrentBalance < item.Price)
