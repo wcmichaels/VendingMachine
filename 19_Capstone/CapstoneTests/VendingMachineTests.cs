@@ -80,13 +80,13 @@ namespace CapstoneTests
         [DataRow("7", "Please enter valid dollar amount.")]
         public void FeedMoneyTest(string inputString, string expectedOutput)
         {
-            //VendingItem vi = new VendingItem("Crunchie", ItemType.Candy, 1.75M, "B4");
+            // Arrange
             VendingMachine vm = new VendingMachine();
           
-            //Act
+            // Act
             string actualOutput = vm.FeedMoney(inputString);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expectedOutput, actualOutput);
         }
 
@@ -94,6 +94,7 @@ namespace CapstoneTests
 
         public void GetItemsToDisplayTestHappyPath()
         {
+            // Arrange
             VendingMachine vm = new VendingMachine();
             List<string> expectedOutput = new List<string>(){
              "A1 | 3.05 | Potato Crisps",
@@ -114,13 +115,17 @@ namespace CapstoneTests
              "D4 | 0.75 | Triplemint"
             };
 
+            // Act
             List<string> actualOutput = vm.GetItemsToDisplay();
+
+            // Assert
             CollectionAssert.AreEqual(expectedOutput, actualOutput);
         }
 
         [TestMethod]
         public void GetItemsToDisplayIfSoldOut()
         {
+            // Arrange 
             VendingMachine vm = new VendingMachine();
             vm.FeedMoney("10");
             vm.PurchaseItem("D3");
@@ -148,33 +153,68 @@ namespace CapstoneTests
              "D4 | 0.75 | Triplemint"
             };
 
+            // Act
             List<string> actualOutput = vm.GetItemsToDisplay();
+
+            // Assert
             CollectionAssert.AreEqual(expectedOutput, actualOutput);
         }
         
         [TestMethod]
-        public void FinishTransactionTests()
+        public void FinishTransactionTest_QuartersOnly()
         {
+            // Arrange
             VendingMachine vm = new VendingMachine();
             vm.FeedMoney("5");
             vm.PurchaseItem("A3");
-            //Act
+            // Act
             string expectedOutput = $"Here's your change. 9 quarters";
             string actualOutput = vm.FinishTransaction();
-            //Assert
+            // Assert
             Assert.AreEqual(expectedOutput, actualOutput);
         }
 
         [TestMethod]
         public void FinishTransactionTestsDimesNickles()
         {
+            // Arange 
             VendingMachine vm = new VendingMachine();
             vm.FeedMoney("1");
             vm.PurchaseItem("D1");
-            //Act
+            // Act
             string expectedOutput = $"Here's your change. 1 dime 1 nickel";
             string actualOutput = vm.FinishTransaction();
-            //Assert
+            // Assert
+            Assert.AreEqual(expectedOutput, actualOutput);
+        }
+
+        [TestMethod]
+        public void FinishTransactionTests_QuartersDimeNickel()
+        {
+            // Arrange
+            VendingMachine vm = new VendingMachine();
+            vm.FeedMoney("10");
+            vm.PurchaseItem("A4");
+            vm.PurchaseItem("D2");
+            // Act
+            string expectedOutput = $"Here's your change. 21 quarters 1 dime 1 nickel";
+            string actualOutput = vm.FinishTransaction();
+            // Assert
+            Assert.AreEqual(expectedOutput, actualOutput);
+        }
+
+        [TestMethod]
+        public void FinishTransactionTests_MultipleDimes()
+        {
+            // Arrange
+            VendingMachine vm = new VendingMachine();
+            vm.FeedMoney("5");
+            vm.PurchaseItem("B1");
+
+            // Act
+            string expectedOutput = $"Here's your change. 12 quarters 2 dimes";
+            string actualOutput = vm.FinishTransaction();
+            // Assert
             Assert.AreEqual(expectedOutput, actualOutput);
         }
 

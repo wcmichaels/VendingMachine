@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Capstone.CLI
 {
-    class SubMenu : MenuFramework.ConsoleMenu
+    public class SubMenu : MenuFramework.ConsoleMenu
     {
         private VendingMachine vm;
         public SubMenu(VendingMachine vm)
@@ -67,7 +67,7 @@ namespace Capstone.CLI
             Console.WriteLine(@" |_|   |_||_______||_|  |__||_______|  |___|    |_|   |___|    |_______||_______||__| |__||_______||_______||__|");
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine("$1, $2, $5, OR $10 BILLS ONLY, PLEASE");
+            Console.WriteLine("$1, $2, $5, OR $10 BILLS ONLY");
             Console.Write("Please enter how much money you would like to insert: ");
             string inputString = Console.ReadLine();
             string messageToUser = vm.FeedMoney(inputString);

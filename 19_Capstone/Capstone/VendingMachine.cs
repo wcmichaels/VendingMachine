@@ -44,8 +44,6 @@ namespace Capstone
             }
             catch (Exception ex)
             {
-                // TODO - finish catch (possibly make a log file for caught exceptions to catch and write the error to)
-
                 Console.WriteLine("Sorry we had a problem loading the file.");
             }
         }
@@ -180,13 +178,6 @@ namespace Capstone
 
         public string FinishTransaction()
         {
-            //CurrentBalance must be zero
-            //3.10 
-            //*100 = 310 cents
-            //310 % 25 gives us the cents remaining that aren't quarters (10)
-            //10 % 10 = 0(1 dime)
-            //310 / 25 gives us the number of quarters (12)
-            //return 12 quarters and one dime as a string
             decimal previousBalanceToLog = CurrentBalance;
 
             int numberOfCents = (int)(CurrentBalance * 100);
@@ -204,13 +195,12 @@ namespace Capstone
 
             LogTransaction("GIVE CHANGE", previousBalanceToLog, CurrentBalance);
 
-            //TODO if no pennies or nickels or dimes, update string accordingly (if else returns)
             string output = "Here's your change.";
             string qOutput = GetChangeWording(quarters, $"quarter");
             string dOutput = GetChangeWording(dimes, $"dime");
             string nOutput = GetChangeWording(nickels, $"nickel");
-            string change = $"{output}{qOutput}{dOutput}{nOutput}";
-            return change;
+            output = $"{output}{qOutput}{dOutput}{nOutput}";
+            return output;
         }
 
         private string GetChangeWording(int numberOfCoins, string coinName)
