@@ -44,12 +44,14 @@ namespace Capstone
         /// <summary>
         /// Removes one item from Inventory if inventory above 0.
         /// </summary>
-        public void RemoveOneItemFromInventory()
+        public int RemoveOneItemFromInventory()
         {
             if (Inventory >= 1)
             {
                 this.Inventory--;
             }
+
+            return this.Inventory;
         }
     }
 }
