@@ -7,7 +7,14 @@ namespace Capstone
 {
     public class VendingMachine
     {
+        /// <summary>
+        /// List containing all the vending items loaded from text file.
+        /// </summary>
         public List<VendingItem> Items { get; private set; } = new List<VendingItem>();
+
+        /// <summary>
+        /// Represents the current balance of the vending machine.
+        /// </summary>
         public decimal CurrentBalance { get; private set; } = 0;
 
         public VendingMachine()
@@ -15,6 +22,10 @@ namespace Capstone
             LoadVendingItems();
         }
 
+        /// <summary>
+        /// Reads text file and creates a vending item for each line in file.
+        /// Adds each vending item to Items property in vending machine.
+        /// </summary>
         private void LoadVendingItems()
         {
             string filePath = @"..\..\..\..\vendingmachine.csv";
@@ -48,10 +59,20 @@ namespace Capstone
             }
         }
 
+        /// <summary>
+        /// Generates report including each vending item with a total
+        /// quantity sold of each item spanning history of machine. Includes total sales for machine in dollars. 
+        /// </summary>
         public void CreateSalesReport()
         {
             decimal runningSum = 0;
             List<string> logItems = new List<string>();
+            Dictionary<VendingItem, int> totalSoldByItem = new Dictionary<VendingItem, int>();
+
+            foreach (VendingItem item in this.Items)
+            {
+                totalSoldByItem[item] = 0;
+            }
 
             using (StreamReader sr = new StreamReader(@"..\..\..\..\Log.txt"))
             {
@@ -67,17 +88,19 @@ namespace Capstone
                 {
                     if (logItem.Contains(vendingItem.Name))
                     {
+                        totalSoldByItem[vendingItem] += 1;
                         runningSum += vendingItem.Price;
-                        vendingItem.AddOneItemToTotalSold();
                     }
                 }
+
             }
             string fileDate = DateTime.Now.ToString("MMddyyyy_HHmmsstt");
             using (StreamWriter sw = new StreamWriter($"..\\..\\..\\..\\{fileDate}SalesReport.txt"))
             {
                 foreach (VendingItem item in this.Items)
                 {
-                    sw.WriteLine($"{item.Name}|{item.TotalSold}");
+
+                    sw.WriteLine($"{item.Name}|{totalSoldByItem[item]}");
                 }
 
                 sw.WriteLine();
@@ -85,6 +108,11 @@ namespace Capstone
             }
         }
 
+        /// <summary>
+        /// Validates if item can be purchased, then executes purchase.
+        /// </summary>
+        /// <param name="userInput">The alphanumeric location of the vending item to be purchased.</param>
+        /// <returns>A string with details of successful purchase, or if not successful a message to the user why couldnt purchase.</returns>
         public string PurchaseItem(string userInput)
         {
 
@@ -138,10 +166,14 @@ namespace Capstone
             }
         }
 
-
-        public string FeedMoney(string inputString)
+        /// <summary>
+        /// Allows money to be added to vending machine balance.
+        /// </summary>
+        /// <param name="moneyAsString">Money to add to the machine balance as string.</param>
+        /// <returns>A message to user indicacating if successfully added to balance.</returns>
+        public string FeedMoney(string moneyAsString)
         {
-            bool isValidAmount = decimal.TryParse(inputString, out decimal moneyToAdd);
+            bool isValidAmount = decimal.TryParse(moneyAsString, out decimal moneyToAdd);
 
             if (isValidAmount)
             {
@@ -157,6 +189,10 @@ namespace Capstone
             return "Please enter valid dollar amount.";
         }
 
+        /// <summary>
+        /// Retrieves a list of vending items in vending machine.  Indicates if item is sold out.
+        /// </summary>
+        /// <returns>List of vending items</returns>
         public List<string> GetItemsToDisplay()
         {
             List<string> output = new List<string>();
@@ -176,6 +212,10 @@ namespace Capstone
             return output;
         }
 
+        /// <summary>
+        /// Clears remaining vending machine balanc to zero and calculates change to give back.
+        /// </summary>
+        /// <returns>Change as string including number of quarters, dimes, and nickels</returns>
         public string FinishTransaction()
         {
             decimal previousBalanceToLog = CurrentBalance;
