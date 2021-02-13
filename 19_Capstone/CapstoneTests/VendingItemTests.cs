@@ -59,5 +59,61 @@ namespace CapstoneTests
             // Assert
             Assert.AreEqual(expectedResult, actualResult);
         }
+
+        [TestMethod]
+        public void GetItemTypeMessage_Candy()
+        {
+            // Arrange
+            VendingItem vi = new VendingItem("Snickers", ItemType.Candy, 3.05M, "A1");
+            string expectedOutput = "Munch Munch, Yum!";
+
+            // Act
+            string actualOutput = vi.GetItemTypeMessage();
+
+            // Assert
+            Assert.AreEqual(expectedOutput, actualOutput);
+        }
+
+        [TestMethod]
+        public void GetItemTypeMessage_Chip()
+        {
+            // Arrange
+            VendingItem vi = new VendingItem("Lays", ItemType.Chip, 1.85M, "A4");
+            string expectedOutput = "Crunch Crunch, Yum!";
+
+            // Act
+            string actualOutput = vi.GetItemTypeMessage();
+
+            // Assert
+            Assert.AreEqual(expectedOutput, actualOutput);
+        }
+
+        [TestMethod]
+        public void GetItemTypeMessage_Drink()
+        {
+            // Arrange
+            VendingItem vi = new VendingItem("Coca Cola", ItemType.Drink, 1.50M, "B1");
+            string expectedOutput = "Glug Glug, Yum!";
+
+            // Act
+            string actualOutput = vi.GetItemTypeMessage();
+
+            // Assert
+            Assert.AreEqual(expectedOutput, actualOutput);
+        }
+
+        [TestMethod]
+        public void GetItemTypeMessage_Gum()
+        {
+            // Arrange
+            VendingItem vi = new VendingItem("Trident Mint", ItemType.Gum, 1.1M, "D1");
+            string expectedOutput = "Chew Chew, Yum!";
+
+            // Act
+            string actualOutput = vi.GetItemTypeMessage();
+
+            // Assert
+            Assert.AreEqual(expectedOutput, actualOutput);
+        }
     }
 }
