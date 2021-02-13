@@ -48,8 +48,7 @@ namespace Capstone.CLI
             Console.WriteLine(@"  |___|  |__| |__||__| |__||_|  |__||___| |_||_______||__|");
             Console.WriteLine();
             Console.WriteLine();
-            //giving change method, prints message, update balance to 0
-            //return to main menu
+
             string messageToUser = vm.FinishTransaction();
             Console.WriteLine(messageToUser);
             Jingle();

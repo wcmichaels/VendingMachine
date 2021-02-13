@@ -127,7 +127,7 @@ namespace Capstone
                         string logName = $"{item.Name} {item.Location}";
                         this.CurrentBalance -= item.Price;
                         LogTransaction(logName, previousBalanceToLog, CurrentBalance);
-                        string itemTypeMessage = GetItemType(item);
+                        string itemTypeMessage = item.GetItemTypeMessage();
                         item.RemoveOneItemFromInventory();
                         return $"Successfully purchased {item.Name}, remaining balance: {this.CurrentBalance}\n{itemTypeMessage}";
                     }
@@ -144,26 +144,6 @@ namespace Capstone
             }
 
             return "Please provide a valid location.";
-        }
-
-        private string GetItemType(VendingItem item)
-        {
-            if (item.Type == ItemType.Candy)
-            {
-                return "Munch Munch, Yum!";
-            }
-            else if (item.Type == ItemType.Chip)
-            {
-                return "Crunch Crunch, Yum!";
-            }
-            else if (item.Type == ItemType.Drink)
-            {
-                return "Glug Glug, Yum!";
-            }
-            else
-            {
-                return "Chew Chew, Yum!";
-            }
         }
 
         /// <summary>
@@ -228,9 +208,7 @@ namespace Capstone
             centsRemaining = centsRemaining % 10;
 
             int nickels = centsRemaining / 5;
-            centsRemaining = centsRemaining % 5;
 
-            int pennies = centsRemaining;
             CurrentBalance = 0;
 
             LogTransaction("GIVE CHANGE", previousBalanceToLog, CurrentBalance);

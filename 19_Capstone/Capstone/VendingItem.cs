@@ -53,5 +53,28 @@ namespace Capstone
 
             return this.Inventory;
         }
+        /// <summary>
+        /// Gets a dispensing message based on type of vending item
+        /// </summary>
+        /// <returns>dispensing message</returns>
+        public string GetItemTypeMessage()
+        {
+            if (Type == ItemType.Candy)
+            {
+                return "Munch Munch, Yum!";
+            }
+            else if (Type == ItemType.Chip)
+            {
+                return "Crunch Crunch, Yum!";
+            }
+            else if (Type == ItemType.Drink)
+            {
+                return "Glug Glug, Yum!";
+            }
+            else
+            {
+                return "Chew Chew, Yum!";
+            }
+        }
     }
 }
